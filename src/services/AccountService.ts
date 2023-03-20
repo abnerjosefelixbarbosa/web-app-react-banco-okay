@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Account } from "./../models/Account";
 
 export const AccountService = () => {
   const URL = "http://localhost:8080";

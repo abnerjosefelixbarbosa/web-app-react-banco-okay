@@ -1,4 +1,4 @@
-import { Alert, Button, Container, TextField } from "@mui/material";
+import { Alert, Button, Container, Snackbar, TextField } from "@mui/material";
 import { useState } from "react";
 import { useIMask } from "react-imask";
 import { Customer } from "./../models/Customer";
@@ -47,6 +47,7 @@ const MascaraCpf = () => {
 export const FormularioLogin = () => {
   const refCpf = MascaraCpf();
   const refSenha = MascaraSenha();
+  const [open, setOpen] = useState(false);
   let customer: Customer = {
     cpf: refCpf.current?.value,
     password: refSenha.current?.value,
@@ -62,23 +63,41 @@ export const FormularioLogin = () => {
     const accountService = AccountService();
     const login = accountValidation.login(customer.cpf, customer.password);
     if (login !== "") {
-      console.log(login);
+      showMensage(login);
     } else {
       accountService.login(customer.cpf, customer.password).then((value) => {
         if (typeof value === "string") {
-          console.log(value);
+          showMensage(value);
         } else if (typeof value === "object") {
           account = { ...value };
           console.log(account);
         }
-        
       });
     }
+  };
+
+  const showMensage = (value: string) => {
+    const mens: any = document.getElementById("mensage");
+    mens.innerHTML = value;
+    document.getElementById("alert-error")?.classList.remove("hidden");
+    setTimeout(() => {
+      hiddenMensage();
+    }, 3000);
+  };
+
+  const hiddenMensage = () => {
+    document.getElementById("alert-error")?.classList.add("hidden");
   };
 
   return (
     <>
       <Container className="container_login" maxWidth="xs">
+        <div id="alert-error" className="hidden">
+          <Alert variant="filled" severity="error">
+            <span id="mensage"></span>
+          </Alert>
+        </div>
+        <br />
         <div className="center titulo">
           <h1>Login</h1>
         </div>

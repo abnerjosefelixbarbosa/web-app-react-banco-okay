@@ -24,3 +24,7 @@
 .button-login {
     background-color: slateblue !important;
 }
+
+.hidden {
+    display: none;
+}
