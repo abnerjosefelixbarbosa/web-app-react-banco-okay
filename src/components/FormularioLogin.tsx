@@ -47,33 +47,37 @@ const MascaraCpf = () => {
 export const FormularioLogin = () => {
   const refCpf = MascaraCpf();
   const refSenha = MascaraSenha();
-  const cpf = refCpf.current?.value;
-  const password = refSenha.current?.value;
   const navigate = useNavigate();
-
-  
+  let cpf: any = refCpf.current?.value;
+  let password: any = refSenha.current?.value;
 
   const login = (e: any) => {
     e.preventDefault();
     //949.612.154-30
     //481228
 
-    const resultLogin = AccountValidation().login(cpf, password);
-    if (resultLogin !== "") {
-      showMensage(resultLogin);
+    accountValidationLogin();
+  };
+
+  const accountValidationLogin = () => {
+    const resultValidationLoin = AccountValidation().login(cpf, password);
+    if (resultValidationLoin !== "") {
+      showMensage(resultValidationLoin);
     } else {
       accountServiceLogin();
     }
   };
 
-  const accountServiceLogin = () => {
-    AccountService().login(cpf, password).then((value) => {
-      if (typeof value === "string") {
-        showMensage(value);
-      } else {
-        navigate("/selection", {state: value});
-      }
-    });
+  const accountServiceLogin = async () => {
+    await AccountService()
+      .login(cpf, password)
+      .then((value) => {
+        if (typeof value === "string") {
+          showMensage(value);
+        } else {
+          navigate('selection', {state: value});
+        }
+      });
   };
 
   const showMensage = (value: string) => {
