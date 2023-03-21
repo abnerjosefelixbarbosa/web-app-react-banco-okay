@@ -1,10 +1,10 @@
-import { Alert, Button, Container, Snackbar, TextField } from "@mui/material";
-import { useState } from "react";
+import { Alert, Button, Container, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useIMask } from "react-imask";
-import { Customer } from "./../models/Customer";
+import { useNavigate } from "react-router-dom";
 import { AccountService } from "../services/AccountService";
 import { AccountValidation } from "../utils/AccountValidation";
-import { Account } from "../models/Account";
+import { Account } from "./../models/Account";
 
 const MascaraSenha = () => {
   const [optsSenha, setOptsSenha] = useState({
@@ -47,33 +47,33 @@ const MascaraCpf = () => {
 export const FormularioLogin = () => {
   const refCpf = MascaraCpf();
   const refSenha = MascaraSenha();
-  const [open, setOpen] = useState(false);
-  let customer: Customer = {
-    cpf: refCpf.current?.value,
-    password: refSenha.current?.value,
-  };
-  let account: Account = {};
+  const cpf = refCpf.current?.value;
+  const password = refSenha.current?.value;
+  const navigate = useNavigate();
+
+  
 
   const login = (e: any) => {
     e.preventDefault();
     //949.612.154-30
     //481228
 
-    const accountValidation = AccountValidation();
-    const accountService = AccountService();
-    const login = accountValidation.login(customer.cpf, customer.password);
-    if (login !== "") {
-      showMensage(login);
+    const resultLogin = AccountValidation().login(cpf, password);
+    if (resultLogin !== "") {
+      showMensage(resultLogin);
     } else {
-      accountService.login(customer.cpf, customer.password).then((value) => {
-        if (typeof value === "string") {
-          showMensage(value);
-        } else if (typeof value === "object") {
-          account = { ...value };
-          console.log(account);
-        }
-      });
+      accountServiceLogin();
     }
+  };
+
+  const accountServiceLogin = () => {
+    AccountService().login(cpf, password).then((value) => {
+      if (typeof value === "string") {
+        showMensage(value);
+      } else {
+        navigate("/selection", {state: value});
+      }
+    });
   };
 
   const showMensage = (value: string) => {
@@ -82,7 +82,7 @@ export const FormularioLogin = () => {
     document.getElementById("alert-error")?.classList.remove("hidden");
     setTimeout(() => {
       hiddenMensage();
-    }, 3000);
+    }, 2000);
   };
 
   const hiddenMensage = () => {
