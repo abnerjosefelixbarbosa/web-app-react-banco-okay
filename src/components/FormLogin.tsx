@@ -1,10 +1,9 @@
 import { Alert, Button, Container, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useIMask } from "react-imask";
 import { useNavigate } from "react-router-dom";
 import { AccountService } from "../services/AccountService";
 import { AccountValidation } from "../utils/AccountValidation";
-import { Account } from "./../models/Account";
 
 const MascaraSenha = () => {
   const [optsSenha, setOptsSenha] = useState({
@@ -44,25 +43,25 @@ const MascaraCpf = () => {
   return ref;
 };
 
-export const FormularioLogin = () => {
+export const FormLogin = () => {
   const refCpf = MascaraCpf();
   const refSenha = MascaraSenha();
   const navigate = useNavigate();
-  let cpf: any = refCpf.current?.value;
-  let password: any = refSenha.current?.value;
+  const cpf: any = refCpf.current?.value;
+  const password: any = refSenha.current?.value;
 
   const login = (e: any) => {
     e.preventDefault();
     //949.612.154-30
     //481228
-
+    
     accountValidationLogin();
   };
 
   const accountValidationLogin = () => {
-    const resultValidationLoin = AccountValidation().login(cpf, password);
-    if (resultValidationLoin !== "") {
-      showMensage(resultValidationLoin);
+    const resultValidationLogin = AccountValidation().login(cpf, password);
+    if (resultValidationLogin !== "") {
+      showMensage(resultValidationLogin);
     } else {
       accountServiceLogin();
     }
@@ -81,8 +80,8 @@ export const FormularioLogin = () => {
   };
 
   const showMensage = (value: string) => {
-    const mens: any = document.getElementById("mensage");
-    mens.innerHTML = value;
+    const mensage: any = document.getElementById("mensage");
+    mensage.innerHTML = value;
     document.getElementById("alert-error")?.classList.remove("hidden");
     setTimeout(() => {
       hiddenMensage();
@@ -103,7 +102,7 @@ export const FormularioLogin = () => {
         </div>
         <br />
         <div className="center titulo">
-          <h1>Login</h1>
+          <h1 className="font">Login</h1>
         </div>
 
         <form onSubmit={login}>
