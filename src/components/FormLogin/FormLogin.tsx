@@ -75,7 +75,7 @@ export const FormLogin = () => {
         if (typeof value === "string") {
           showMensage(value);
         } else {
-          navigate('selection', {state: value});
+          navigate('/selection', {state: value});
         }
       });
   };
