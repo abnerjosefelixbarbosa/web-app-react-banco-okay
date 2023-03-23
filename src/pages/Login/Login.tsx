@@ -1,5 +1,4 @@
-import { FormLogin } from "../../components/FormLogin";
-import "./Login.css";
+import { FormLogin } from "../../components/FormLogin/FormLogin";
 
 export const Login = () => {
   return (

@@ -2,8 +2,9 @@ import { Alert, Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { useIMask } from "react-imask";
 import { useNavigate } from "react-router-dom";
-import { AccountService } from "../services/AccountService";
-import { AccountValidation } from "../utils/AccountValidation";
+import { AccountService } from "../../services/AccountService";
+import { AccountValidation } from "../../utils/AccountValidation";
+import "./FormLogin.css";
 
 const MascaraSenha = () => {
   const [optsSenha, setOptsSenha] = useState({
@@ -47,8 +48,8 @@ export const FormLogin = () => {
   const refCpf = MascaraCpf();
   const refSenha = MascaraSenha();
   const navigate = useNavigate();
-  const cpf: any = refCpf.current?.value;
-  const password: any = refSenha.current?.value;
+  const cpf = refCpf.current?.value;
+  const password = refSenha.current?.value;
 
   const login = (e: any) => {
     e.preventDefault();
