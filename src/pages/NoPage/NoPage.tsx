@@ -1,7 +1,11 @@
 export const NoPage = () => {
   return (
     <>
-      <h1>404</h1>
+      <header></header>
+      <section>
+        <h1>404</h1>
+      </section>
+      <footer></footer>
     </>
   );
 };

@@ -1,13 +1,13 @@
 import { Alert, Button, Container, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIMask } from "react-imask";
 import { useNavigate } from "react-router-dom";
 import { AccountService } from "../../services/AccountService";
 import { AccountValidation } from "../../utils/AccountValidation";
 import "./FormLogin.css";
 
-const MascaraSenha = () => {
-  const [optsSenha, setOptsSenha] = useState({
+const PasswordMask = () => {
+  const [optsPassword, setOptsPassword] = useState({
     mask: String("000000"),
   });
 
@@ -20,12 +20,12 @@ const MascaraSenha = () => {
     setUnmaskedValue,
     typedValue,
     setTypedValue,
-  } = useIMask(optsSenha);
+  } = useIMask(optsPassword);
 
   return ref;
 };
 
-const MascaraCpf = () => {
+const CpfMask = () => {
   const [optsCpf, setOptsCpf] = useState({
     mask: String("000.000.000-00"),
   });
@@ -45,19 +45,11 @@ const MascaraCpf = () => {
 };
 
 export const FormLogin = () => {
-  const refCpf = MascaraCpf();
-  const refSenha = MascaraSenha();
   const navigate = useNavigate();
+  const refCpf = CpfMask();
+  const refPassword = PasswordMask();
   const cpf = refCpf.current?.value;
-  const password = refSenha.current?.value;
-
-  const login = (e: any) => {
-    e.preventDefault();
-    //949.612.154-30
-    //481228
-    
-    accountValidationLogin();
-  };
+  const password = refPassword.current?.value;
 
   const accountValidationLogin = () => {
     const resultValidationLogin = AccountValidation().login(cpf, password);
@@ -75,7 +67,7 @@ export const FormLogin = () => {
         if (typeof value === "string") {
           showMensage(value);
         } else {
-          navigate('/selection', {state: value});
+          navigate("/selection", { state: value });
         }
       });
   };
@@ -95,22 +87,24 @@ export const FormLogin = () => {
 
   return (
     <>
-      <Container className="container_login" maxWidth="xs">
+      <Container className="container-login" maxWidth="xs">
         <div id="alert-error" className="hidden">
           <Alert variant="filled" severity="error">
             <span id="mensage"></span>
           </Alert>
         </div>
-        <br />
-        <div className="center titulo">
-          <h1 className="font">Login</h1>
-        </div>
-
-        <form onSubmit={login}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            //949.612.154-30
+            //481228
+            accountValidationLogin();
+          }}
+        >
           <div>
             <TextField
               fullWidth
-              label="cpf"
+              label="cpf:"
               id="cpf"
               size="small"
               variant="standard"
@@ -121,12 +115,12 @@ export const FormLogin = () => {
           <div>
             <TextField
               fullWidth
-              label="senha"
-              id="senha"
+              label="senha:"
+              id="password"
               size="small"
               variant="standard"
               type={"text"}
-              inputRef={refSenha}
+              inputRef={refPassword}
             />
           </div>
           <br />

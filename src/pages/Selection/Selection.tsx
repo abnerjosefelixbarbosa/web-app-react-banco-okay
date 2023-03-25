@@ -7,7 +7,11 @@ export const Selection = () => {
   return (
     <>
       <div className="Selection">
-        <NavBarSelection account={location.state} />
+        <header>
+          <NavBarSelection account={location.state} />
+        </header>
+        <section></section>
+        <footer></footer>
       </div>
     </>
   );

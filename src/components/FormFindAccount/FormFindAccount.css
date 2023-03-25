@@ -11,16 +11,12 @@ body {
     background-color: white;
 }
 
-.hidden {
-    display: none;
-}
-
 .center {
     display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.button-login {
+.button-find {
     background-color: slateblue !important;
 }

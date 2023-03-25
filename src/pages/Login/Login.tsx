@@ -4,7 +4,11 @@ export const Login = () => {
   return (
     <>
       <div className="Login">
-        <FormLogin />
+        <header></header>
+        <section>
+          <FormLogin />
+        </section>
+        <footer></footer>
       </div>
     </>
   );

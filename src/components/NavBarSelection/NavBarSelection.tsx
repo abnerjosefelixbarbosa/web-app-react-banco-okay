@@ -8,19 +8,23 @@ export const NavBarSelection = (props: any) => {
 
   return (
     <>
-      <ul>
-        <li className="band">
-          <a>{name}</a>
-        </li>
-        <li className="dropdown">
-          <a className="dropbtn" href="">
-            Operações
-          </a>
-          <div className="dropdown-content">
-            <Link to="/find-account" state={account}>Transfer</Link>
-          </div>
-        </li>
-      </ul>
+      <nav>
+        <ul>
+          <li className="band">
+            <a>{name}</a>
+          </li>
+          <li className="dropdown">
+            <a className="dropbtn" href="">
+              Operações
+            </a>
+            <div className="dropdown-content">
+              <Link to="/find-account" state={account}>
+                Transfer
+              </Link>
+            </div>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 };
