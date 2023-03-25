@@ -51,6 +51,8 @@ export const FormLogin = () => {
   const cpf = refCpf.current?.value;
   const password = refPassword.current?.value;
 
+  //949.612.154-30
+  //481228
   const accountValidationLogin = () => {
     const resultValidationLogin = AccountValidation().login(cpf, password);
     if (resultValidationLogin !== "") {
@@ -96,8 +98,6 @@ export const FormLogin = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            //949.612.154-30
-            //481228
             accountValidationLogin();
           }}
         >
