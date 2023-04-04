@@ -2,9 +2,12 @@ import { Alert, Button, Container, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useIMask } from "react-imask";
 import { useNavigate } from "react-router-dom";
-import { AccountService } from "../../services/AccountService";
-import { AccountValidation } from "../../utils/AccountValidation";
+import { checkFormLogin } from "../../utils/AccountValidation";
+//import { AccountService } from "../../services/AccountService";
+//import { AccountValidation } from "../../utils/AccountValidation";
 import "./FormLogin.css";
+import { Customer } from "./../../models/Customer";
+import { loginFormRequest } from "../../services/AccountService";
 
 const PasswordMask = () => {
   const [optsPassword, setOptsPassword] = useState({
@@ -50,55 +53,53 @@ export const FormLogin = () => {
   const refPassword = PasswordMask();
   const cpf = refCpf.current?.value;
   const password = refPassword.current?.value;
+  const [mesage, setMesage] = useState<string>("");
+  const [showElement, setShowElement] = useState<boolean>(false);
 
   //949.612.154-30
   //481228
-  const accountValidationLogin = () => {
-    const resultValidationLogin = AccountValidation().login(cpf, password);
-    if (resultValidationLogin !== "") {
-      showMensage(resultValidationLogin);
-    } else {
-      accountServiceLogin();
+  const login = () => {
+    const customer: Customer = {
+      cpf: cpf,
+      password: password,
+    };
+
+    const loginChecked = checkFormLogin(customer);
+    if (loginChecked !== "login verificado") showMesage(loginChecked);
+    else {
+      loginFormRequest(customer).then((value) => {
+        if (typeof value === "string") showMesage(value);
+        else navigate("/selection", { state: value });
+      });
     }
   };
 
-  const accountServiceLogin = async () => {
-    await AccountService()
-      .login(cpf, password)
-      .then((value) => {
-        if (typeof value === "string") {
-          showMensage(value);
-        } else {
-          navigate("/selection", { state: value });
-        }
-      });
-  };
-
-  const showMensage = (value: string) => {
-    const mensage: any = document.getElementById("mensage");
-    mensage.innerHTML = value;
-    document.getElementById("alert-error")?.classList.remove("hidden");
+  const showMesage = (value: string) => {
+    setMesage(value);
+    setShowElement(true);
     setTimeout(() => {
-      hiddenMensage();
+      hiddenMesage();
     }, 2000);
   };
 
-  const hiddenMensage = () => {
-    document.getElementById("alert-error")?.classList.add("hidden");
+  const hiddenMesage = () => {
+    setShowElement(false);
   };
 
   return (
     <>
       <Container className="container-login" maxWidth="xs">
-        <div id="alert-error" className="hidden">
-          <Alert variant="filled" severity="error">
-            <span id="mensage"></span>
-          </Alert>
-        </div>
+        {showElement ? (
+          <div id="alert-error">
+            <Alert variant="filled" severity="error">
+              <span>{mesage}</span>
+            </Alert>
+          </div>
+        ) : null}
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            accountValidationLogin();
+            login();
           }}
         >
           <div>

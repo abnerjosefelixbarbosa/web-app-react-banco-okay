@@ -1,17 +1,11 @@
 
-export const AccountValidation = () => {
-    const login = (pCpf: any, pPassword: any) => {
-        if (pCpf === "") {
-            return "cpf obrigatório"
-        }
-        if (pPassword === "") {
-            return "senha obrigatória"
-        }
+import { Customer } from './../models/Customer';
 
-        return ""
-    }
+export const checkFormLogin = (customer: Customer) => {
+  if (customer.cpf === "") 
+    return "cpf invalido";
+  if (customer.password === "") 
+    return "senha invalido";
 
-    return {
-        login
-    }
-}
+  return "login verificado";
+};

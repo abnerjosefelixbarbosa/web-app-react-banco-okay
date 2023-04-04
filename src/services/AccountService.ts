@@ -1,19 +1,17 @@
 import axios from "axios";
-import { Account } from "../models/Account";
+import { BASE_URL } from "../utils/request";
+import { Customer } from "./../models/Customer";
+import { Account } from "./../models/Account";
 
-export const AccountService = () => {
-  const URL = "http://localhost:8080";
-  let account: Account;
-
-  const login = async (pCpf: any, pPassword: any) => {
-    return await axios
-      .get(`${URL}/accounts/login/${pCpf}/${pPassword}`)
-      .then((response) => response.data)
-      .catch((e) => e.response.data)
-      .catch(() => "error de acesso");
-  };
-
-  return {
-    login,
-  };
+export const loginFormRequest = async (customer: Customer) => {
+  return await axios
+    .post(`${BASE_URL}/accounts/login-account-by-cpf-and-password`, customer)
+    .then((response) => {
+      const data: Account = { ...response.data };
+      return data;
+    })
+    .catch((e) => {
+      const data: string = e.response.data;
+      return data;
+    });
 };
