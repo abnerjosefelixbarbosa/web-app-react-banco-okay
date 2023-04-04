@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useIMask } from "react-imask";
 import { useNavigate } from "react-router-dom";
 import { checkFormLogin } from "../../utils/AccountValidation";
-//import { AccountService } from "../../services/AccountService";
-//import { AccountValidation } from "../../utils/AccountValidation";
 import "./FormLogin.css";
 import { Customer } from "./../../models/Customer";
 import { loginFormRequest } from "../../services/AccountService";
