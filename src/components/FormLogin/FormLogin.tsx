@@ -78,12 +78,8 @@ export const FormLogin = () => {
     setMesage(value);
     setShowElement(true);
     setTimeout(() => {
-      hiddenMesage();
+      setShowElement(false);
     }, 2000);
-  };
-
-  const hiddenMesage = () => {
-    setShowElement(false);
   };
 
   return (
