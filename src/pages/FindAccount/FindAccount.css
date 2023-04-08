@@ -3,6 +3,12 @@ body {
     margin: 0;   
 }
 
+.bar-header {
+    background-color: slateblue;
+    width: 100%;
+    height: 50px;
+}
+
 .container-login {
     margin: 300px;
     border: 1px solid slateblue;
@@ -19,4 +25,12 @@ body {
 
 .button-find {
     background-color: slateblue !important;
+}
+
+.bar-footer {
+    background-color: slateblue;
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    bottom: 0;
 }
