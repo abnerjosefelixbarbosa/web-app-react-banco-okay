@@ -6,7 +6,6 @@ import { useState } from "react";
 import {
   Card,
   CardContent,
-  CardMedia,
   Container,
   Typography,
 } from "@mui/material";

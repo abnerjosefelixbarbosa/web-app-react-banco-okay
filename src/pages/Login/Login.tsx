@@ -3,7 +3,7 @@ import { BASE_URL } from "../../utils/request";
 import { Account } from "../../models/Account";
 import { Customer } from "../../models/Customer";
 import { useIMask } from "react-imask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Container, TextField } from "@mui/material";
@@ -57,12 +57,12 @@ const requestFormLogin = async (customer: Customer) => {
   return await axios
     .post(`${BASE_URL}/accounts/login-account-by-cpf-and-password`, customer)
     .then((response) => {
-      const data: Account = { ...response.data };
-      return data;
+      const account: Account = { ...response.data };
+      return account;
     })
     .catch((e) => {
-      const data: string = e.response.data;
-      return data;
+      const mesage: string = e.response.data;
+      return mesage;
     });
 };
 
@@ -70,8 +70,6 @@ export const Login = () => {
   const navigate = useNavigate();
   const refCpf = CpfMask();
   const refPassword = PasswordMask();
-  const cpf = refCpf.current?.value;
-  const password = refPassword.current?.value;
   const [mesage, setMesage] = useState<string>("");
   const [showElement, setShowElement] = useState<boolean>(false);
 
@@ -79,15 +77,16 @@ export const Login = () => {
   //481228
   const handLogin = () => {
     const customer: Customer = {
-      cpf: cpf,
-      password: password,
+      cpf: refCpf.current?.value,
+      password: refPassword.current?.value,
     };
 
     const loginChecked = checkFormLogin(customer);
     if (loginChecked !== "login verificado") showMesage(loginChecked);
     else {
-      setShowElement(false);
-      requestFormLogin(customer).then((value) => {
+      hiddenMesage();
+      requestFormLogin(customer)
+      .then((value) => {
         if (typeof value === "string") showMesage(value);
         else navigate("/selection", { state: value });
       });
@@ -98,6 +97,8 @@ export const Login = () => {
     setMesage(value);
     setShowElement(true);
   };
+
+  const hiddenMesage = () => setShowElement(false);
 
   return (
     <>
@@ -141,7 +142,7 @@ export const Login = () => {
                     id="password"
                     size="small"
                     variant="filled"
-                    type={"text"}
+                    type={"password"}
                     inputRef={refPassword}
                   />
                 </div>

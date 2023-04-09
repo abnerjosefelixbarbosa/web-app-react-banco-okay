@@ -24,6 +24,7 @@ body {
 }
 
 .button-find {
+    width: 80%;
     background-color: slateblue !important;
 }
 

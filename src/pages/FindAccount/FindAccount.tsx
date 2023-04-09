@@ -1,8 +1,11 @@
-import { Button, Container, TextField } from "@mui/material";
+import { Alert, Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { useIMask } from "react-imask";
 import { Account } from "./../../models/Account";
 import "./FindAccount.css";
+import axios from "axios";
+import { BASE_URL } from './../../utils/request';
+import { useLocation } from "react-router-dom";
 
 const AgencyMask = () => {
   const [optsAgency, setOptsAgency] = useState({
@@ -42,19 +45,62 @@ const AccountMask = () => {
   return ref;
 };
 
+const checkFindAccount = (account: Account) => {
+  if (account.agency === "") return "agencia invalida";
+  if (account.account === "") return "conta invalida";
+
+  return "conta verificada";
+};
+
+const findAccountRequest = async (account: Account) => {
+  return await axios.post(`${BASE_URL}/accounts/find-account-by-agency-and-account`, account)
+  .then((response) => {
+    account = { ...response.data }
+    return account;
+  })
+  .catch((e) => {
+    const mesage: string = e.response.data;
+    return mesage;
+  });
+};
+
 export const FindAccount = () => {
   const agencyRef = AgencyMask();
   const accountRef = AccountMask();
-  const [account, setAccount] = useState<Account>({
-    agency: agencyRef.current?.value,
-    account: accountRef.current?.value,
-  });
+  const [mesage, setMesage] = useState<string>("");
+  const [showElement, setShowElement] = useState<boolean>(false);
+  const location = useLocation();
+  const [account, setAccount] = useState<Account>({ ...location.state });
 
   //1568-1
   //13681-1
+  //2210-1
+  //21224-1
   const handFindAccount = () => {
-    console.log(account);
+    const accountForm: Account = {
+      agency: agencyRef.current?.value,
+      account: accountRef.current?.value,
+    };
+
+    const accountChecked = checkFindAccount(accountForm);
+    if (accountChecked !== "conta verificada") showMesage(accountChecked);
+    else {
+      hiddenMesage();
+      findAccountRequest(accountForm)
+      .then((value) => {
+        if (typeof value === "string") showMesage(value);
+        else if (value.id === account.id) showMesage("conta logada");
+        else hiddenMesage();
+      });
+    }
   };
+
+  const showMesage = (value: string) => {
+    setMesage(value);
+    setShowElement(true);
+  };
+
+  const hiddenMesage = () => setShowElement(false);
 
   return (
     <>
@@ -70,34 +116,46 @@ export const FindAccount = () => {
                 handFindAccount();
               }}
             >
-              <div>
-                <TextField
-                  fullWidth
-                  label="agência:"
-                  id="agência"
-                  size="small"
-                  variant="filled"
-                  type={"text"}
-                  inputRef={agencyRef}
-                />
+              <div className="container-header-form-find-account">
+                {showElement ? (
+                  <div id="alert-error">
+                    <Alert variant="filled" severity="error">
+                      <span>{mesage}</span>
+                    </Alert>
+                  </div>
+                ) : null}
               </div>
-              <div>
-                <TextField
-                  fullWidth
-                  label="conta:"
-                  id="conta"
-                  size="small"
-                  variant="filled"
-                  type={"text"}
-                  inputRef={accountRef}
-                />
+              <br />
+              <div className="container-body-form-find-account">
+                <div>
+                  <TextField
+                    fullWidth
+                    label="agência:"
+                    id="agência"
+                    size="small"
+                    variant="filled"
+                    type={"text"}
+                    inputRef={agencyRef}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    fullWidth
+                    label="conta:"
+                    id="conta"
+                    size="small"
+                    variant="filled"
+                    type={"text"}
+                    inputRef={accountRef}
+                  />
+                </div>
               </div>
-              <div>
+              <br />
+              <div className="container-footer-form-find-account center">
                 <Button
                   type="submit"
                   variant="contained"
                   className="button-find"
-                  fullWidth
                 >
                   Encontrar
                 </Button>
