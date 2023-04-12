@@ -76,16 +76,16 @@ export const Login = () => {
   //949.612.154-30
   //481228
   const handLogin = () => {
-    const customer: Customer = {
+    const data: Customer = {
       cpf: refCpf.current?.value,
       password: refPassword.current?.value,
     };
 
-    const loginChecked = checkFormLogin(customer);
+    const loginChecked = checkFormLogin(data);
     if (loginChecked !== "login verificado") showMesage(loginChecked);
     else {
       hiddenMesage();
-      requestFormLogin(customer)
+      requestFormLogin(data)
       .then((value) => {
         if (typeof value === "string") showMesage(value);
         else navigate("/selection", { state: value });

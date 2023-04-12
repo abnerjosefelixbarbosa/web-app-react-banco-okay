@@ -19,6 +19,7 @@ export const Selection = () => {
     <>
       <div className="Selection">
         <header>
+
           <nav>
             <ul>
               <li className="band">
@@ -36,8 +37,10 @@ export const Selection = () => {
               </li>
             </ul>
           </nav>
+
         </header>
         <section>
+
           <Container className="container-balance" maxWidth="xs">
             <Card sx={{ maxWidth: 345 }}>
               <CardContent>
@@ -50,6 +53,7 @@ export const Selection = () => {
               </CardContent>
             </Card>
           </Container>
+
           <Container className="container-card" maxWidth="xs">
             <Card sx={{ maxWidth: 345 }}>
               <CardContent>
@@ -62,6 +66,7 @@ export const Selection = () => {
               </CardContent>
             </Card>
           </Container>
+
           <Container className="container-account" maxWidth="xs">
             <Card sx={{ maxWidth: 345 }}>
               <CardContent>
@@ -74,6 +79,7 @@ export const Selection = () => {
               </CardContent>
             </Card>
           </Container>
+
         </section>
         <footer>
           <div className="bar-footer"></div>

@@ -1,10 +1,10 @@
 import { Customer } from "./Customer";
 
 export interface Account {
-  id?: Number;
-  agency?: String;
-  account?: String;
-  balance?: Number;
-  password?: String;
+  id?: number;
+  agency?: string;
+  account?: string;
+  balance?: number;
+  password?: string;
   customer?: Customer;
 }

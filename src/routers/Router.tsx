@@ -3,6 +3,7 @@ import { Login } from "../pages/Login/Login";
 import { NoPage } from "../pages/NoPage/NoPage";
 import { Selection } from "../pages/Selection/Selection";
 import { FindAccount } from "../pages/FindAccount/FindAccount";
+import { Transfer } from "../pages/Transfer/Transfer";
 
 export const Router = () => {
   return (
@@ -11,6 +12,7 @@ export const Router = () => {
         <Route index element={<Login />} />
         <Route path="selection" element={<Selection />} />
         <Route path="find-account" element={<FindAccount />} />
+        <Route path="transfer" element={<Transfer />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

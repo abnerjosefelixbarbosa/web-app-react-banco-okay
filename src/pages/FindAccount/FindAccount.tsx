@@ -4,8 +4,8 @@ import { useIMask } from "react-imask";
 import { Account } from "./../../models/Account";
 import "./FindAccount.css";
 import axios from "axios";
-import { BASE_URL } from './../../utils/request';
-import { useLocation } from "react-router-dom";
+import { BASE_URL } from "./../../utils/request";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AgencyMask = () => {
   const [optsAgency, setOptsAgency] = useState({
@@ -53,15 +53,16 @@ const checkFindAccount = (account: Account) => {
 };
 
 const findAccountRequest = async (account: Account) => {
-  return await axios.post(`${BASE_URL}/accounts/find-account-by-agency-and-account`, account)
-  .then((response) => {
-    account = { ...response.data }
-    return account;
-  })
-  .catch((e) => {
-    const mesage: string = e.response.data;
-    return mesage;
-  });
+  return await axios
+    .post(`${BASE_URL}/accounts/find-account-by-agency-and-account`, account)
+    .then((response) => {
+      account = { ...response.data };
+      return account;
+    })
+    .catch((e) => {
+      const mesage: string = e.response.data;
+      return mesage;
+    });
 };
 
 export const FindAccount = () => {
@@ -71,26 +72,29 @@ export const FindAccount = () => {
   const [showElement, setShowElement] = useState<boolean>(false);
   const location = useLocation();
   const [account, setAccount] = useState<Account>({ ...location.state });
+  const navigate = useNavigate();
 
   //1568-1
   //13681-1
   //2210-1
   //21224-1
   const handFindAccount = () => {
-    const accountForm: Account = {
+    const data: Account = {
       agency: agencyRef.current?.value,
       account: accountRef.current?.value,
     };
 
-    const accountChecked = checkFindAccount(accountForm);
+    const accountChecked = checkFindAccount(data);
     if (accountChecked !== "conta verificada") showMesage(accountChecked);
     else {
       hiddenMesage();
-      findAccountRequest(accountForm)
-      .then((value) => {
+      findAccountRequest(data).then((value) => {
         if (typeof value === "string") showMesage(value);
         else if (value.id === account.id) showMesage("conta logada");
-        else hiddenMesage();
+        else navigate("/transfer", { state: {
+          account1: account,
+          account2: value
+        } });
       });
     }
   };
@@ -109,7 +113,7 @@ export const FindAccount = () => {
           <div className="bar-header"></div>
         </header>
         <section>
-          <Container className="container-login" maxWidth="xs">
+          <Container className="container-find-account" maxWidth="xs">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
