@@ -2,14 +2,10 @@ import { Alert, Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { Account } from "../../models/Account";
 import { useLocation, useNavigate } from "react-router-dom";
+import "./Transfer.css";
 
 const checkTransfer = (account: Account) => {
-  console.log(account.balance?.toString().indexOf(".00"))
-  if (
-    account.balance?.toString() === "" ||
-    account.balance?.toString().indexOf(".") !== 1 
-  )
-    return "saldo invalido";
+  if (account.balance?.toString() === "0.00") return "saldo invalido";
 
   return "transferência verificada";
 };
@@ -28,14 +24,22 @@ export const Transfer = () => {
   });
 
   const handTransfer = () => {
+    const balanceFixed: any = Number(balance).toFixed(2);
     const data: Account = {
-      balance: balance,
+      balance: balanceFixed,
     };
 
     const transferChecked = checkTransfer(data);
     if (transferChecked !== "transferência verificada")
       showMesage(transferChecked);
-    else hiddenMesage();
+    else
+      navigate("/confirm-account", {
+        state: {
+          account1: account1,
+          account2: account2,
+          data: data,
+        },
+      });
   };
 
   const showMesage = (value: string) => {

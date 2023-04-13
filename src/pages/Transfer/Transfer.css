@@ -9,6 +9,11 @@ body {
     height: 50px;
 }
 
+.button-transfer {
+    width: 80%;
+    background-color: slateblue !important;
+}
+
 .center {
     display: flex;
 	align-items: center;
