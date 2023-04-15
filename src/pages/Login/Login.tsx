@@ -85,10 +85,9 @@ export const Login = () => {
     if (loginChecked !== "login verificado") showMesage(loginChecked);
     else {
       hiddenMesage();
-      requestFormLogin(data)
-      .then((value) => {
+      requestFormLogin(data).then((value) => {
         if (typeof value === "string") showMesage(value);
-        else navigate("/selection", { state: value });
+        else navigate("/selection", { state: value, replace: true });
       });
     }
   };
@@ -106,7 +105,9 @@ export const Login = () => {
         <header>
           <div className="bar-header"></div>
         </header>
+
         <section>
+
           <Container className="container-login" maxWidth="xs">
             <form
               onSubmit={(e) => {
@@ -123,6 +124,7 @@ export const Login = () => {
                   </div>
                 ) : null}
               </div>
+              <br />
               <div className="container-form-login-body">
                 <div>
                   <TextField
@@ -147,6 +149,7 @@ export const Login = () => {
                   />
                 </div>
               </div>
+              <br />
               <div className="container-form-login-botton center">
                 <Button
                   type="submit"
@@ -159,7 +162,9 @@ export const Login = () => {
               </div>
             </form>
           </Container>
+
         </section>
+
         <footer>
           <div className="bar-footer"></div>
         </footer>

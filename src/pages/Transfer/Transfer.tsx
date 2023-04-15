@@ -24,11 +24,11 @@ export const Transfer = () => {
   });
 
   const handTransfer = () => {
-    const balanceFixed: any = Number(balance).toFixed(2);
+    const balanceCorrected: any = Number(balance).toFixed(2);
     const data: Account = {
-      balance: balanceFixed,
+      balance: balanceCorrected,
     };
-
+    console.log(data);
     const transferChecked = checkTransfer(data);
     if (transferChecked !== "transferência verificada")
       showMesage(transferChecked);
@@ -39,15 +39,17 @@ export const Transfer = () => {
           account2: account2,
           data: data,
         },
+        replace: true,
       });
   };
+
+  const handBack = () =>
+    navigate("/find-account", { state: account1, replace: true });
 
   const showMesage = (value: string) => {
     setMesage(value);
     setShowElement(true);
   };
-
-  const hiddenMesage = () => setShowElement(false);
 
   return (
     <>
@@ -55,6 +57,7 @@ export const Transfer = () => {
         <header>
           <div className="bar-header"></div>
         </header>
+
         <section>
           <Container className="container-find-account" maxWidth="xs">
             <form
@@ -88,18 +91,32 @@ export const Transfer = () => {
                 </div>
               </div>
               <br />
-              <div className="container-footer-form-transfer center">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="button-transfer"
-                >
-                  Transferir
-                </Button>
+              <div className="container-footer-form-transfer">
+                <div className="center">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="button-transfer"
+                  >
+                    Transferir
+                  </Button>
+                </div>
+                <br />
+                <div className="center">
+                  <Button
+                    type="button"
+                    variant="contained"
+                    className="button-back"
+                    onClick={() => handBack()}
+                  >
+                    Voltar
+                  </Button>
+                </div>
               </div>
             </form>
           </Container>
         </section>
+
         <footer>
           <div className="bar-footer"></div>
         </footer>

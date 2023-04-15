@@ -62,6 +62,10 @@ li.dropdown {
     background-color: slateblue;
 }
 
+.logout {
+    float: right;
+}
+
 .bar-balance {
     background-color: slateblue;
     height: 50px;

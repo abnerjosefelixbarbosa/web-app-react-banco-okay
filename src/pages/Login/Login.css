@@ -11,7 +11,7 @@ body {
 }
 
 .container-login {
-    margin: 260px;
+    margin: 300px;
     border: 1px solid slateblue;
     border-radius: 10px;
     padding: 10px !important;
@@ -22,14 +22,6 @@ body {
     display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-.container-form-login-body {
-    margin-top: 10px;
-}
-
-.container-form-login-botton {
-    margin-top: 10px;
 }
 
 .button-login {

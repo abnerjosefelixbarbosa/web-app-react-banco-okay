@@ -11,7 +11,7 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route index element={<Login />} />
-        <Route path="selection" element={<Selection />} />
+        <Route path="selection" element={<Selection />}/>
         <Route path="find-account" element={<FindAccount />} />
         <Route path="transfer" element={<Transfer />} />
         <Route path="confirm-account" element={<ConfirmAccount />} />

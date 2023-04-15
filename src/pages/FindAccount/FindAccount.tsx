@@ -73,6 +73,7 @@ export const FindAccount = () => {
   const location = useLocation();
   const [account, setAccount] = useState<Account>({ ...location.state });
   const navigate = useNavigate();
+  console.log(account);
 
   //1568-1
   //13681-1
@@ -83,6 +84,7 @@ export const FindAccount = () => {
       agency: agencyRef.current?.value,
       account: accountRef.current?.value,
     };
+    
 
     const accountChecked = checkFindAccount(data);
     if (accountChecked !== "conta verificada") showMesage(accountChecked);
@@ -91,13 +93,20 @@ export const FindAccount = () => {
       findAccountRequest(data).then((value) => {
         if (typeof value === "string") showMesage(value);
         else if (value.id === account.id) showMesage("conta logada");
-        else navigate("/transfer", { state: {
-          account1: account,
-          account2: value
-        } });
+        else
+          navigate("/transfer", {
+            state: {
+              account1: account,
+              account2: value,
+            },
+            replace: true,
+          });
       });
     }
   };
+
+  const handBack = () =>
+    navigate("/selection", { state: account, replace: true });
 
   const showMesage = (value: string) => {
     setMesage(value);
@@ -155,14 +164,27 @@ export const FindAccount = () => {
                 </div>
               </div>
               <br />
-              <div className="container-footer-form-find-account center">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="button-find"
-                >
-                  Encontrar
-                </Button>
+              <div className="container-footer-form-find-account">
+                <div className="center">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="button-find"
+                  >
+                    Encontrar
+                  </Button>
+                </div>
+                <br />
+                <div className="center">
+                  <Button
+                    type="button"
+                    variant="contained"
+                    className="button-back"
+                    onClick={() => handBack()}
+                  >
+                    Voltar
+                  </Button>
+                </div>
               </div>
             </form>
           </Container>
