@@ -3,7 +3,7 @@ import "./ConfirmAccount.css";
 import { useState } from "react";
 import { useIMask } from "react-imask";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Account } from "../../models/Account";
+import { Account } from "./../../models/Account";
 
 const PasswordMask = () => {
   const [optsPassword, setOptsPassword] = useState({
@@ -24,11 +24,19 @@ const PasswordMask = () => {
   return ref;
 };
 
+const checkAccount = (account: Account) => {
+  if (account.password === "" || account.password?.length !== 4)
+    return "conta invalida";
+
+  return "conta valida";
+};
+
 export const ConfirmAccount = () => {
   const [mesage, setMesage] = useState<string>("");
   const [showElement, setShowElement] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const refPassword = PasswordMask();
   const [account1, setAccount1] = useState<Account>({
     ...location.state.account1,
   });
@@ -39,7 +47,14 @@ export const ConfirmAccount = () => {
     ...location.state.data,
   });
 
-  const handConfirm = () => {};
+  const handConfirm = () => {
+    const data: Account = {
+      password: refPassword.current?.value,
+    };
+
+    const accountChecked = checkAccount(data);
+    if (accountChecked !== "conta valida") showMesage(accountChecked);
+  };
 
   const handBack = () =>
     navigate("/transfer", {
@@ -50,6 +65,11 @@ export const ConfirmAccount = () => {
       },
       replace: true,
     });
+
+  const showMesage = (value: string) => {
+    setMesage(value);
+    setShowElement(true);
+  };
 
   return (
     <>
@@ -85,6 +105,7 @@ export const ConfirmAccount = () => {
                     size="small"
                     variant="filled"
                     type={"text"}
+                    inputRef={refPassword}
                   />
                 </div>
               </div>

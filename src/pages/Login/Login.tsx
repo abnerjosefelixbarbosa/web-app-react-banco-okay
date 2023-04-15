@@ -84,7 +84,6 @@ export const Login = () => {
     const loginChecked = checkFormLogin(data);
     if (loginChecked !== "login verificado") showMesage(loginChecked);
     else {
-      hiddenMesage();
       requestFormLogin(data).then((value) => {
         if (typeof value === "string") showMesage(value);
         else navigate("/selection", { state: value, replace: true });
@@ -96,8 +95,6 @@ export const Login = () => {
     setMesage(value);
     setShowElement(true);
   };
-
-  const hiddenMesage = () => setShowElement(false);
 
   return (
     <>
