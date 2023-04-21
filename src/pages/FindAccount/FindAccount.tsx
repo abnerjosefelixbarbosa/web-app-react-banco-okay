@@ -45,16 +45,16 @@ const AccountMask = () => {
   return ref;
 };
 
-const checkFindAccount = (account: Account) => {
-  if (account.agency === "") return "agencia invalida";
-  if (account.account === "") return "conta invalida";
-
-  return "conta verificada";
-};
-
 const findAccountRequest = async (account: Account) => {
+  if (account.agency === "") {
+    throw new Error("agencia invalida");
+  }
+  if (account.account === "") {
+    throw new Error("conta invalida");
+  }
+
   return await axios
-    .post(`${BASE_URL}/accounts/find-account-by-agency-and-account`, account)
+    .post(`${BASE_URL}/accounts/find-by-agency-and-account`, account)
     .then((response) => {
       account = { ...response.data };
       return account;
@@ -73,7 +73,6 @@ export const FindAccount = () => {
   const location = useLocation();
   const [account, setAccount] = useState<Account>({ ...location.state });
   const navigate = useNavigate();
-  console.log(account);
 
   //1568-1
   //13681-1
@@ -84,16 +83,14 @@ export const FindAccount = () => {
       agency: agencyRef.current?.value,
       account: accountRef.current?.value,
     };
-    
 
-    const accountChecked = checkFindAccount(data);
-    if (accountChecked !== "conta verificada") showMesage(accountChecked);
-    else {
-      hiddenMesage();
-      findAccountRequest(data).then((value) => {
-        if (typeof value === "string") showMesage(value);
-        else if (value.id === account.id) showMesage("conta logada");
-        else
+    findAccountRequest(data)
+      .then((value) => {
+        if (typeof value === "string") {
+          showMesage(value);
+        } else if (value.id === account.id) { 
+          showMesage("conta logada");
+        } else {
           navigate("/transfer", {
             state: {
               account1: account,
@@ -101,12 +98,16 @@ export const FindAccount = () => {
             },
             replace: true,
           });
+        }
+      })
+      .catch((e) => {
+        showMesage(e.message);
       });
-    }
   };
 
-  const handBack = () =>
+  const handBack = () => {
     navigate("/selection", { state: account, replace: true });
+  }
 
   const showMesage = (value: string) => {
     setMesage(value);

@@ -46,16 +46,16 @@ const CpfMask = () => {
   return ref;
 };
 
-const checkFormLogin = (customer: Customer) => {
-  if (customer.cpf === "") return "cpf invalido";
-  if (customer.password === "") return "senha invalido";
-
-  return "login verificado";
-};
-
 const requestFormLogin = async (customer: Customer) => {
+  if (customer.cpf === "" || customer.cpf?.length !== 14) {
+    throw new Error("cpf invalido");
+  }
+  if (customer.password === "" || customer.password?.length !== 6) {
+    throw new Error("senha invalido");
+  }
+
   return await axios
-    .post(`${BASE_URL}/accounts/login-account-by-cpf-and-password`, customer)
+    .post(`${BASE_URL}/accounts/login-by-cpf-and-password`, customer)
     .then((response) => {
       const account: Account = { ...response.data };
       return account;
@@ -81,14 +81,20 @@ export const Login = () => {
       password: refPassword.current?.value,
     };
 
-    const loginChecked = checkFormLogin(data);
-    if (loginChecked !== "login verificado") showMesage(loginChecked);
-    else {
-      requestFormLogin(data).then((value) => {
-        if (typeof value === "string") showMesage(value);
-        else navigate("/selection", { state: value, replace: true });
+    requestFormLogin(data)
+      .then((value) => {
+        if (typeof value === "string") {
+          showMesage(value);
+        } else {
+          navigate("/selection", {
+            state: value,
+            replace: true
+          });
+        }
+      })
+      .catch((e) => {
+        showMesage(e.message);
       });
-    }
   };
 
   const showMesage = (value: string) => {
@@ -104,7 +110,6 @@ export const Login = () => {
         </header>
 
         <section>
-
           <Container className="container-login" maxWidth="xs">
             <form
               onSubmit={(e) => {
@@ -159,7 +164,6 @@ export const Login = () => {
               </div>
             </form>
           </Container>
-
         </section>
 
         <footer>
