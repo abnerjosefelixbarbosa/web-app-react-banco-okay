@@ -6,6 +6,7 @@ import "./FindAccount.css";
 import axios from "axios";
 import { BASE_URL } from "./../../utils/request";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AccountService } from "../../services/AccountService/AccountService";
 
 const AgencyMask = () => {
   const [optsAgency, setOptsAgency] = useState({
@@ -45,26 +46,6 @@ const AccountMask = () => {
   return ref;
 };
 
-const findAccountRequest = async (account: Account) => {
-  if (account.agency === "") {
-    throw new Error("agencia invalida");
-  }
-  if (account.account === "") {
-    throw new Error("conta invalida");
-  }
-
-  return await axios
-    .post(`${BASE_URL}/accounts/find-by-agency-and-account`, account)
-    .then((response) => {
-      account = { ...response.data };
-      return account;
-    })
-    .catch((e) => {
-      const mesage: string = e.response.data;
-      return mesage;
-    });
-};
-
 export const FindAccount = () => {
   const agencyRef = AgencyMask();
   const accountRef = AccountMask();
@@ -84,37 +65,34 @@ export const FindAccount = () => {
       account: accountRef.current?.value,
     };
 
-    findAccountRequest(data)
-      .then((value) => {
-        if (typeof value === "string") {
-          showMesage(value);
-        } else if (value.id === account.id) { 
-          showMesage("conta logada");
+    AccountService()
+      .findByAgencyAndAccount(data)
+      .then((response) => {
+        if (response.id === account.id) {
+          showMesageError("conta logada");
         } else {
           navigate("/transfer", {
             state: {
               account1: account,
-              account2: value,
+              account2: response,
             },
             replace: true,
           });
         }
       })
       .catch((e) => {
-        showMesage(e.message);
+        showMesageError(e.message);
       });
   };
 
   const handBack = () => {
     navigate("/selection", { state: account, replace: true });
-  }
-
-  const showMesage = (value: string) => {
-    setMesage(value);
-    setShowElement(true);
   };
 
-  const hiddenMesage = () => setShowElement(false);
+  const showMesageError = (mesage: string) => {
+    setMesage(mesage);
+    setShowElement(true);
+  };
 
   return (
     <>

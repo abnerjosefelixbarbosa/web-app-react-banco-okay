@@ -1,12 +1,10 @@
-import axios from "axios";
-import { BASE_URL } from "../../utils/request";
-import { Account } from "../../models/Account";
 import { Customer } from "../../models/Customer";
 import { useIMask } from "react-imask";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Container, TextField } from "@mui/material";
+import { AccountService } from "../../services/AccountService/AccountService";
 
 const PasswordMask = () => {
   const [optsPassword, setOptsPassword] = useState({
@@ -46,26 +44,6 @@ const CpfMask = () => {
   return ref;
 };
 
-const requestFormLogin = async (customer: Customer) => {
-  if (customer.cpf === "" || customer.cpf?.length !== 14) {
-    throw new Error("cpf invalido");
-  }
-  if (customer.password === "" || customer.password?.length !== 6) {
-    throw new Error("senha invalido");
-  }
-
-  return await axios
-    .post(`${BASE_URL}/accounts/login-by-cpf-and-password`, customer)
-    .then((response) => {
-      const account: Account = { ...response.data };
-      return account;
-    })
-    .catch((e) => {
-      const mesage: string = e.response.data;
-      return mesage;
-    });
-};
-
 export const Login = () => {
   const navigate = useNavigate();
   const refCpf = CpfMask();
@@ -75,30 +53,29 @@ export const Login = () => {
 
   //949.612.154-30
   //481228
+  //370.897.974-57
+  //583245
   const handLogin = () => {
     const data: Customer = {
       cpf: refCpf.current?.value,
       password: refPassword.current?.value,
     };
 
-    requestFormLogin(data)
-      .then((value) => {
-        if (typeof value === "string") {
-          showMesage(value);
-        } else {
-          navigate("/selection", {
-            state: value,
-            replace: true
-          });
-        }
+    AccountService()
+      .loginByCpfAndPassword(data)
+      .then((response) => {
+        navigate("/selection", {
+          state: response,
+          replace: true,
+        });
       })
       .catch((e) => {
-        showMesage(e.message);
+        showMesageError(e.message);
       });
   };
 
-  const showMesage = (value: string) => {
-    setMesage(value);
+  const showMesageError = (mesage: string) => {
+    setMesage(mesage);
     setShowElement(true);
   };
 

@@ -4,12 +4,6 @@ import { Account } from "../../models/Account";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Transfer.css";
 
-const checkTransfer = (account: Account) => {
-  if (account.balance?.toString() === "0.00") return "saldo invalido";
-
-  return "transferência verificada";
-};
-
 export const Transfer = () => {
   const [balance, setBalance] = useState<any>("");
   const [mesage, setMesage] = useState<string>("");
@@ -28,11 +22,10 @@ export const Transfer = () => {
     const data: Account = {
       balance: balanceCorrected,
     };
-    console.log(data);
-    const transferChecked = checkTransfer(data);
-    if (transferChecked !== "transferência verificada")
-      showMesage(transferChecked);
-    else
+
+    if (data.balance?.toString() === "0.00") {
+      showMesageError("saldo invalido");
+    } else {
       navigate("/confirm-account", {
         state: {
           account1: account1,
@@ -41,13 +34,15 @@ export const Transfer = () => {
         },
         replace: true,
       });
+    }
   };
 
-  const handBack = () =>
+  const handBack = () => {
     navigate("/find-account", { state: account1, replace: true });
+  }
 
-  const showMesage = (value: string) => {
-    setMesage(value);
+  const showMesageError = (mesage: string) => {
+    setMesage(mesage);
     setShowElement(true);
   };
 

@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useIMask } from "react-imask";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Account } from "./../../models/Account";
+import axios from "axios";
+import { BASE_URL } from "../../utils/request";
+import { AccountService } from "../../services/AccountService/AccountService";
 
 const PasswordMask = () => {
   const [optsPassword, setOptsPassword] = useState({
@@ -24,13 +27,6 @@ const PasswordMask = () => {
   return ref;
 };
 
-const checkAccount = (account: Account) => {
-  if (account.password === "" || account.password?.length !== 4)
-    return "conta invalida";
-
-  return "conta valida";
-};
-
 export const ConfirmAccount = () => {
   const [mesage, setMesage] = useState<string>("");
   const [showElement, setShowElement] = useState<boolean>(false);
@@ -47,13 +43,25 @@ export const ConfirmAccount = () => {
     ...location.state.data,
   });
 
+  //4812
+  //5832
   const handConfirm = () => {
     const data: Account = {
       password: refPassword.current?.value,
+      balance: accountData.balance,
     };
 
-    const accountChecked = checkAccount(data);
-    if (accountChecked !== "conta valida") showMesage(accountChecked);
+    AccountService()
+      .transferBalance(account1, account2, data)
+      .then(() => {
+        const balance1: any = account1.balance;
+        const balance2: any = data.balance;
+        account1.balance = balance1 - balance2;
+        navigate("/find-account", { state: account1, replace: true });
+      })
+      .catch((e) => {
+        showMesageError(e.message);
+      });
   };
 
   const handBack = () =>
@@ -66,8 +74,8 @@ export const ConfirmAccount = () => {
       replace: true,
     });
 
-  const showMesage = (value: string) => {
-    setMesage(value);
+  const showMesageError = (mesage: string) => {
+    setMesage(mesage);
     setShowElement(true);
   };
 
@@ -104,7 +112,7 @@ export const ConfirmAccount = () => {
                     id="senha"
                     size="small"
                     variant="filled"
-                    type={"text"}
+                    type={"password"}
                     inputRef={refPassword}
                   />
                 </div>

@@ -37,6 +37,7 @@ export const Selection = () => {
             </ul>
           </nav>
         </header>
+
         <section>
           <Container className="container-balance" maxWidth="xs">
             <Card sx={{ maxWidth: 345 }}>
@@ -77,6 +78,7 @@ export const Selection = () => {
             </Card>
           </Container>
         </section>
+        
         <footer>
           <div className="bar-footer"></div>
         </footer>
