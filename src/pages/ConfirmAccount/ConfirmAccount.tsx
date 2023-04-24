@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useIMask } from "react-imask";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Account } from "./../../models/Account";
-import axios from "axios";
-import { BASE_URL } from "../../utils/request";
 import { AccountService } from "../../services/AccountService/AccountService";
 
 const PasswordMask = () => {

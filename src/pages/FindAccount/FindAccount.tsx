@@ -3,8 +3,6 @@ import { useState } from "react";
 import { useIMask } from "react-imask";
 import { Account } from "./../../models/Account";
 import "./FindAccount.css";
-import axios from "axios";
-import { BASE_URL } from "./../../utils/request";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountService } from "../../services/AccountService/AccountService";
 
