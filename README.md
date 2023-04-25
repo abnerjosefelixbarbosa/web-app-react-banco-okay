@@ -5,7 +5,7 @@
 
 # About project
 
-Front-end app which allows to do transactions, where the customer enters his profile and selects the balance transfer operation to another account.
+Front-end app that allows to make bank transactions at the bank okay, where the customer enters his profile and selects the balance transfer operation to another account.
 
 # Features
 
