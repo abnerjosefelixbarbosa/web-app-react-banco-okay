@@ -13,7 +13,7 @@ React front-end app which allows to do transactions, where the customer enters h
 - Find By Agency And Account
 - Transfer Balance
 
-## front-end
+## Front-end
 
 - axios
 - react
@@ -33,6 +33,8 @@ npm i
 npm run dev
 ```
 # Author
+
+Abner José Felix Barbosa
 
 Linkedin: https://www.linkedin.com/in/abner-jose-feliz-barbosa/
 
