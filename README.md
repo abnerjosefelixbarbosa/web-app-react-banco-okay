@@ -5,7 +5,7 @@
 
 # About project
 
-React front-end app which allows carrying out transactions, where the customer enters his profile and selects the balance transfer operation to another account.
+React front-end app which allows to do transactions, where the customer enters his profile and selects the balance transfer operation to another account.
 
 # Features
 
