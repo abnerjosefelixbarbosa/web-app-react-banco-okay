@@ -5,7 +5,7 @@
 
 # About project
 
-Front-end app that allows to make bank transactions at the bank okay, where the customer enters his profile and selects the balance transfer operation to another account.
+React app that allows to do bank transactions at the bank okay, where the customer enters his profile and selects the balance transfer operation to another account.
 
 # Features
 
