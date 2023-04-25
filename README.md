@@ -1,7 +1,7 @@
 # web-app-react-banco-okay
 
 # LICENSE
-[![NPM](https://img.shields.io/npm/l/react)](https://github.com/abnerjosefelixbarbosa/api-controle-de-estoque/blob/main/LICENSE)
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/abnerjosefelixbarbosa/web-app-react-banco-okay/blob/main/LICENSE)
 
 # About project
 
